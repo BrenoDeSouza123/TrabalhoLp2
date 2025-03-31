@@ -15,7 +15,7 @@ import com.mycompany.trabalholp2.model.Fornecedor;
  */
 public class FornecedorDAO {
     public void cadastrarFornecedor(Fornecedor fornecedor) {
-        String sql = "INSERT INTO fornecedor (nome, cnpj, telefone, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO fornecedor (nome, CNPJ, telefone, email, endereco) VALUES (?, ?, ?, ?)";
         
         try (Connection con = Conexao.getConexao();
              PreparedStatement stmt = con.prepareStatement(sql)) {
