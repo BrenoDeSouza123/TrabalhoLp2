@@ -15,7 +15,7 @@ import com.mycompany.trabalholp2.model.Produto;
  */
 public class ProdutoDAO {
     public void cadastrarProduto(Produto produto) {
-        String sql = "INSERT INTO produto (nome, descricao, preco, quantidade) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO produto (nome_prod, categoria, qtde, fornecedor) VALUES (?, ?, ?, ?)";
         
         try (Connection con = Conexao.getConexao();
              PreparedStatement stmt = con.prepareStatement(sql)) {
