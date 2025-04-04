@@ -19,21 +19,26 @@ import java.util.List;
  */
 public class ProdutoDAO {
     public void cadastrarProduto(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produto (nome_prod, categoria, qtde, fornecedor) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO PRODUTO (nome_prod, qtde, categoria, fornecedor) VALUES (?, ?, ?, ?)";
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = con.prepareStatement(sql);
         try {
             
             stmt.setString(1, produto.getNome_prod());
-            stmt.setString(2, produto.getCategoria());
-            stmt.setDouble(3, produto.getQtde());
-            //stmt.setInt(4, produto.getFornecedor());
+            stmt.setInt(2, produto.getQtde());
+            stmt.setString(3, produto.getCategoria());                        
+            stmt.setString(4, produto.getFornecedor());
 
             stmt.executeUpdate();
-            System.out.println("Produto cadastrado com sucesso!");
+                    System.out.println("Produto: " + produto.getNome_prod()
+                    + "cadastrado com sucesso!");
             
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao cadastrar produto: " + e.getMessage());
+            
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao cadastrar fornecedor: " 
+            + e.getMessage());
+            
         }finally {
             Conexao.fecharConexao(con, stmt);
         }

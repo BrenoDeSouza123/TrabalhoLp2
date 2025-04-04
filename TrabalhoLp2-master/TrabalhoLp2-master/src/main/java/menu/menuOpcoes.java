@@ -114,11 +114,13 @@ public class menuOpcoes extends javax.swing.JFrame {
     private void jBotaoCadastrarFornActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotaoCadastrarFornActionPerformed
         // TODO add your handling code here:
         new TelaCadastroFornecedor().setVisible(true);
+        new menuOpcoes().dispose();
     }//GEN-LAST:event_jBotaoCadastrarFornActionPerformed
 
     private void jBotaoCadastrarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotaoCadastrarProdActionPerformed
         // TODO add your handling code here:
         new TelaCadastroProduto().setVisible(true);
+        new menuOpcoes().dispose();
     }//GEN-LAST:event_jBotaoCadastrarProdActionPerformed
 
     /**

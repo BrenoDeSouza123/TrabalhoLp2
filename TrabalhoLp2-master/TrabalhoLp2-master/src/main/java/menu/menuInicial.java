@@ -60,6 +60,7 @@ public class menuInicial extends javax.swing.JFrame {
     private void jBttnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBttnIniciarActionPerformed
         // TODO add your handling code here:
         new menuOpcoes().setVisible(true);
+        new menuInicial().dispose();
     }//GEN-LAST:event_jBttnIniciarActionPerformed
 
     /**

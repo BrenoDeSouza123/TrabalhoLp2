@@ -18,33 +18,29 @@ import java.sql.SQLException;
 
 public class Conexao {
 
-    private static final String DRIVE_MYSQL = "com.mysql.cj.jdbc.Driver";
-    private static final String ENDERECO = "jdbc:mysql://localhost:3306/conexaomysql";
+    private static final String DRIVE_MYSQL = "com.mysql.jdbc.Driver";
+    private static final String ENDERECO = "jdbc:mysql://localhost:3306/trabalhoLp2_1504";
     private static final String USUARIO = "root";
-    private static final String SENHA = "1234";
-
+    private static final String SENHA = "root_1234";
+    private static Connection conn = null;
     
-    public static void main(String[] args) {
-        Connection conexao = getConexao();
-        if (conexao != null) {
-            System.out.println("Conexão bem-sucedida!");
-            fecharConexao(conexao);
-        }
-   }
-    
-    public static Connection getConexao() {
+    public static Connection getConexao() {        
         try {
-            Class.forName(DRIVE_MYSQL);
-            Connection conn
-                    = DriverManager.getConnection(ENDERECO, USUARIO, SENHA);
-            return conn;
+            if (conn == null || conn.isClosed()){
+                Class.forName(DRIVE_MYSQL);
+                conn = DriverManager.getConnection(ENDERECO, USUARIO, SENHA);
+                System.out.print(conn);
+                return conn;
 
-        } catch (ClassNotFoundException | SQLException ex) {
-           
+            }
+        }
+        catch (ClassNotFoundException | SQLException ex) {
+            
             System.err.println("Erro ao estabelecer uma conexão com o banco: " + ex.getMessage());
-
             throw new RuntimeException("Erro ao estabelecer uma conexao com o banco");
         }
+        
+    return null;
     }
 
     public static void fecharConexao(Connection con) {

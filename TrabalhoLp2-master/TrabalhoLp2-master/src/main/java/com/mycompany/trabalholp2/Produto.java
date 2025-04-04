@@ -6,17 +6,17 @@ public class Produto {
     private String nome_prod;
     private int qtde;
     private String categoria;
-    private Fornecedor fornecedor;
+    private String fornecedor;
     private Integer Id;
     
     public Produto (){
         
     }
 
-    public Produto(String nome_prod, String categoria, int qtde, Fornecedor fornecedor) {
+    public Produto(String nome_prod, int qtde,  String categoria, String fornecedor) {
         this.nome_prod = nome_prod;
-        this.categoria = categoria;
         this.qtde = qtde;
+        this.categoria = categoria;        
         this.fornecedor = fornecedor;
     }
     public String getNome_prod(){
@@ -44,6 +44,20 @@ public class Produto {
 
     public void setId(Integer Id) {
         this.Id = Id;
+    }
+
+    /**
+     * @return the fornecedor
+     */
+    public String getFornecedor() {
+        return fornecedor;
+    }
+
+    /**
+     * @param fornecedor the fornecedor to set
+     */
+    public void setFornecedor(String fornecedor) {
+        this.fornecedor = fornecedor;
     }
         
 }

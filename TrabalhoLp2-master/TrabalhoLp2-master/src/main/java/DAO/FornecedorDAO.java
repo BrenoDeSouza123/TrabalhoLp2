@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class FornecedorDAO {
     public void cadastrarFornecedor(Fornecedor fornecedor) throws SQLException {
-        String sql = "INSERT INTO fornecedor (nome, CNPJ, telefone, email, endereco) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO FORNECEDOR (nome, CNPJ, tel, email) VALUES (?, ?, ?, ?)";
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = con.prepareStatement(sql);
         
@@ -29,12 +29,11 @@ public class FornecedorDAO {
             stmt.setString(2, fornecedor.getCNPJ());
             stmt.setString(3, fornecedor.getTelefone());
             stmt.setString(4, fornecedor.getEmail());
-            stmt.setString(5, fornecedor.getEndereco());
+            
 
             stmt.executeUpdate();
             System.out.println("Fornecedor: " + fornecedor.getNome() 
-                    + "cadastrado com sucesso!");
-            
+                    + "cadastrado com sucesso!");            
         } catch (SQLException e) {
             e.printStackTrace();
              throw new RuntimeException("Erro ao cadastrar fornecedor: " 
@@ -51,7 +50,7 @@ public class FornecedorDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("UPDATE CURSO SET nome = ? where id = ? ");
+            stmt = con.prepareStatement("UPDATE FORNECEDOR SET nome = ? where id = ? ");
            
             stmt.setString(1, fornecedor.getNome());
 
@@ -82,7 +81,7 @@ public class FornecedorDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("DELETE from CURSO WHERE id = ?");
+            stmt = con.prepareStatement("DELETE from FORNECEDOR WHERE id = ?");
            
             stmt.setInt(1, fornecedor.getId());
             
@@ -116,7 +115,7 @@ public class FornecedorDAO {
        
        try{
            
-           stmt = con.prepareStatement("select id, nome from CURSO");
+           stmt = con.prepareStatement("select id, nome from FORNECEDOR");
            rs = stmt.executeQuery();
            
            while (rs.next()){

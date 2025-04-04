@@ -1,5 +1,16 @@
 package com.mycompany.trabalholp2;
 
+import DAO.FornecedorDAO;
+import DAO.ProdutoDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import menu.menuOpcoes;
+
 /**
  *
  * @author Breno
@@ -11,8 +22,27 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
      */
     public TelaCadastroProduto() {
         initComponents();
+        this.atualizarTabela();
     }
+    public void atualizarTabela() {
+        try {
+            FornecedorDAO fornecedorDAO = new FornecedorDAO();
+            List<Fornecedor> fornecedores = fornecedorDAO.consulta(); // Correção do uso estático
 
+            DefaultTableModel modelo = (DefaultTableModel) jTabelaFornecedor.getModel();
+            modelo.setRowCount(0); // Limpa os dados antigos antes de inserir os novos
+
+            for (Fornecedor fornecedor : fornecedores) {
+                modelo.addRow(new Object[]{
+                    fornecedor.getId(),
+                    fornecedor.getNome()
+                });
+            }
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar fornecedores: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,13 +62,21 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         jBotaoVoltarProd = new javax.swing.JButton();
         jBotaoEnviarProd = new javax.swing.JButton();
         jTxtCatProd = new javax.swing.JTextField();
-        jComboBox = new javax.swing.JComboBox<>();
+        jRotuloResultado = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTabelaFornecedor = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Tela de cadastro de produto");
 
         jRotuloNomeProd.setText("Nome");
+
+        jTxtNomeProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtNomeProdActionPerformed(evt);
+            }
+        });
 
         jRotuloQtdeProd.setText("Quantidade");
 
@@ -54,8 +92,32 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
         });
 
         jBotaoEnviarProd.setText("Enviar");
+        jBotaoEnviarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotaoEnviarProdActionPerformed(evt);
+            }
+        });
 
-        jComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabelaFornecedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Fornecedor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTabelaFornecedor);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,40 +127,47 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBotaoVoltarProd))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jRotuloNomeProd)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTxtNomeProd, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jRotuloQtdeProd)
-                                            .addComponent(jRotuloCatProd))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTxtCatProd, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                                            .addComponent(jTxtQtdeProduto)))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jRotuloQtdeProd)
+                                                    .addComponent(jRotuloCatProd))
+                                                .addGap(18, 18, 18))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jRotuloNomeProd)
+                                                .addGap(47, 47, 47)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTxtCatProd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(jTxtQtdeProduto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                                .addComponent(jTxtNomeProd, javax.swing.GroupLayout.Alignment.LEADING))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jRotuloFornProd)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBotaoVoltarProd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                        .addComponent(jBotaoEnviarProd)
-                        .addGap(84, 84, 84))))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(346, 346, 346)
+                                .addComponent(jBotaoEnviarProd))
+                            .addComponent(jRotuloResultado))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jBotaoVoltarProd))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRotuloNomeProd)
                     .addComponent(jTxtNomeProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -110,15 +179,22 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRotuloCatProd)
                     .addComponent(jTxtCatProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRotuloFornProd)
-                    .addComponent(jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBotaoVoltarProd)
-                    .addComponent(jBotaoEnviarProd))
-                .addGap(25, 25, 25))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jRotuloFornProd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jBotaoEnviarProd)))
+                        .addGap(18, 18, 18)))
+                .addComponent(jRotuloResultado)
+                .addGap(41, 41, 41))
         );
 
         pack();
@@ -126,7 +202,35 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
 
     private void jBotaoVoltarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotaoVoltarProdActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        new menuOpcoes().setVisible(true);
+        
     }//GEN-LAST:event_jBotaoVoltarProdActionPerformed
+
+    private void jTxtNomeProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtNomeProdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtNomeProdActionPerformed
+
+    private void jBotaoEnviarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotaoEnviarProdActionPerformed
+        // TODO add your handling code here:
+        Integer qtde = Integer.parseInt(jTxtQtdeProduto.getText());
+        int linhaSelecionada = jTabelaFornecedor.getSelectedRow();
+        int colunaSelecionada = jTabelaFornecedor.getSelectedColumn();
+        Produto produto;
+        produto = new Produto (jTxtNomeProd.getText(),qtde , jTxtCatProd.getText(), 
+        (String) jTabelaFornecedor.getValueAt(linhaSelecionada, colunaSelecionada));
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        try {
+            produtoDAO.cadastrarProduto(produto);
+            jRotuloResultado.setText("Produto cadastrado com sucesso");
+        }catch (SQLException ex) {
+            Logger.getLogger(TelaCadastroFornecedor.class.getName()).log(Level.SEVERE,
+            "Falha no cadastro do produto", ex);
+        } 
+        finally{
+            produto = null;     
+         }
+    }//GEN-LAST:event_jBotaoEnviarProdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,12 +270,14 @@ public class TelaCadastroProduto extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBotaoEnviarProd;
     private javax.swing.JButton jBotaoVoltarProd;
-    private javax.swing.JComboBox<String> jComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jRotuloCatProd;
     private javax.swing.JLabel jRotuloFornProd;
     private javax.swing.JLabel jRotuloNomeProd;
     private javax.swing.JLabel jRotuloQtdeProd;
+    private javax.swing.JLabel jRotuloResultado;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTabelaFornecedor;
     private javax.swing.JTextField jTxtCatProd;
     private javax.swing.JTextField jTxtNomeProd;
     private javax.swing.JTextField jTxtQtdeProduto;

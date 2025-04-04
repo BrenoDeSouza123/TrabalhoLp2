@@ -3,6 +3,7 @@ import DAO.FornecedorDAO;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import menu.menuOpcoes;
 
 /**
  *
@@ -15,6 +16,7 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
      */
     public TelaCadastroFornecedor() {
         initComponents();
+        
     }
 
     /**
@@ -34,11 +36,10 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
         jTxtTelForn = new javax.swing.JTextField();
         jRotuloEmailForn = new javax.swing.JLabel();
         jTxtEmailForn = new javax.swing.JTextField();
-        jRotuloEndForn = new javax.swing.JLabel();
-        jTxtEndForn = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jBotaoEnviar = new javax.swing.JButton();
         jBotaoVoltar = new javax.swing.JButton();
+        jRotuloResultado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,8 +63,6 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
 
         jRotuloEmailForn.setText("Email");
 
-        jRotuloEndForn.setText("End");
-
         jLabel6.setText("Tela de cadastro do fornecedor");
 
         jBotaoEnviar.setText("Enviar");
@@ -85,38 +84,44 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6))
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                        .addComponent(jBotaoVoltar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jRotuloEndForn)
-                            .addComponent(jRotuloEmailForn)
-                            .addComponent(jRotuloTelForn)
-                            .addComponent(jRotuloCnpjForn)
-                            .addComponent(jRotuloNomeForn))
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTxtNomeForn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(jTxtCnpjForn)
-                            .addComponent(jTxtTelForn)
-                            .addComponent(jTxtEmailForn)
-                            .addComponent(jTxtEndForn)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jBotaoVoltar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBotaoEnviar)))
-                .addContainerGap(126, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jRotuloEmailForn)
+                                            .addComponent(jRotuloTelForn)
+                                            .addComponent(jRotuloCnpjForn)
+                                            .addComponent(jRotuloNomeForn))
+                                        .addGap(46, 46, 46)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jTxtNomeForn, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                            .addComponent(jTxtTelForn)
+                                            .addComponent(jTxtEmailForn)
+                                            .addComponent(jTxtCnpjForn)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(13, 13, 13)
+                                        .addComponent(jRotuloResultado))))
+                            .addComponent(jBotaoEnviar, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jBotaoVoltar))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRotuloNomeForn)
                     .addComponent(jTxtNomeForn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -132,15 +137,11 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRotuloEmailForn)
                     .addComponent(jTxtEmailForn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRotuloEndForn)
-                    .addComponent(jTxtEndForn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBotaoEnviar)
-                    .addComponent(jBotaoVoltar))
-                .addGap(17, 17, 17))
+                .addGap(58, 58, 58)
+                .addComponent(jBotaoEnviar)
+                .addGap(40, 40, 40)
+                .addComponent(jRotuloResultado)
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         pack();
@@ -152,6 +153,8 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
 
     private void jBotaoVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotaoVoltarActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        new menuOpcoes().setVisible(true);        
     }//GEN-LAST:event_jBotaoVoltarActionPerformed
 
     private void jTxtNomeFornActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtNomeFornActionPerformed
@@ -159,20 +162,24 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
     }//GEN-LAST:event_jTxtNomeFornActionPerformed
 
     private void jBotaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotaoEnviarActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
         Fornecedor fornecedor;
-        fornecedor = new Fornecedor (jTxtNomeForn.getText(), jTxtCnpjForn.getText()
-                , jTxtTelForn.getText(), jTxtEmailForn.getText(),
-                jTxtEndForn.getText());
+        fornecedor = new Fornecedor (jTxtNomeForn.getText(), 
+            jTxtCnpjForn.getText()
+            , jTxtTelForn.getText(), jTxtEmailForn.getText());
         FornecedorDAO FornDao = new FornecedorDAO();
         try {
             FornDao.cadastrarFornecedor(fornecedor);
-            //LogCadastroFornecedor logForn = new LogCadastroFornecedor();
-            //logForn.setVisible(true); 
+            jRotuloResultado.setText("Fornecedor cadastrado com sucesso");
+            new TelaCadastroProduto().atualizarTabela();
+       
         } catch (SQLException ex) {
-            Logger.getLogger(TelaCadastroFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaCadastroFornecedor.class.getName()).log(Level.SEVERE,
+            "Falha no cadastro do fornecedor", ex);
+        }finally{
+            fornecedor = null;    
         }
-        fornecedor = null;
+        
         
     }//GEN-LAST:event_jBotaoEnviarActionPerformed
 
@@ -217,12 +224,11 @@ public class TelaCadastroFornecedor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jRotuloCnpjForn;
     private javax.swing.JLabel jRotuloEmailForn;
-    private javax.swing.JLabel jRotuloEndForn;
     private javax.swing.JLabel jRotuloNomeForn;
+    private javax.swing.JLabel jRotuloResultado;
     private javax.swing.JLabel jRotuloTelForn;
     private javax.swing.JTextField jTxtCnpjForn;
     private javax.swing.JTextField jTxtEmailForn;
-    private javax.swing.JTextField jTxtEndForn;
     private javax.swing.JTextField jTxtNomeForn;
     private javax.swing.JTextField jTxtTelForn;
     // End of variables declaration//GEN-END:variables
