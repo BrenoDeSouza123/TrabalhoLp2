@@ -4,8 +4,8 @@
  */
 package menu;
 
-import com.mycompany.trabalholp2.TelaCadastroFornecedor;
-import com.mycompany.trabalholp2.TelaCadastroProduto;
+import com.mycompany.trabalholp2.Telas.TelaCadastroFornecedor;
+import com.mycompany.trabalholp2.Telas.TelaCadastroProduto;
 
 /**
  *

@@ -28,8 +28,7 @@ public class Conexao {
         try {
             if (conn == null || conn.isClosed()){
                 Class.forName(DRIVE_MYSQL);
-                conn = DriverManager.getConnection(ENDERECO, USUARIO, SENHA);
-                System.out.print(conn);
+                conn = DriverManager.getConnection(ENDERECO, USUARIO, SENHA);                
                 return conn;
 
             }

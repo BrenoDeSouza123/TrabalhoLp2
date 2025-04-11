@@ -8,8 +8,8 @@ import Conexao.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import com.mycompany.trabalholp2.Fornecedor;
-import com.mycompany.trabalholp2.TelaCadastroFornecedor;
+import com.mycompany.trabalholp2.Classes.Fornecedor;
+import com.mycompany.trabalholp2.Telas.TelaCadastroFornecedor;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,13 @@ import java.util.List;
  *
  * @author manoel
  */
-public class FornecedorDAO {
+
+public class FornecedorDAO implements InterfaceFornDAO {
+    
+    
+    @Override
     public void cadastrarFornecedor(Fornecedor fornecedor) throws SQLException {
+       
         String sql = "INSERT INTO FORNECEDOR (nome, CNPJ, tel, email) VALUES (?, ?, ?, ?)";
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = con.prepareStatement(sql);
@@ -33,89 +38,88 @@ public class FornecedorDAO {
 
             stmt.executeUpdate();
             System.out.println("Fornecedor: " + fornecedor.getNome() 
-                    + "cadastrado com sucesso!");            
+            + "cadastrado com sucesso!");  
+            
         } catch (SQLException e) {
-            e.printStackTrace();
+           
              throw new RuntimeException("Erro ao cadastrar fornecedor: " 
                 + e.getMessage());
+             
         }finally {
             
             Conexao.fecharConexao(con, stmt);
         }
     }
     
-    public void alterar(Fornecedor fornecedor) {
+    @Override
+    public void alterar(Fornecedor fornecedor) throws SQLException {
         
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("UPDATE FORNECEDOR SET nome = ? where id = ? ");
-           
+            
+            stmt = con.prepareStatement("UPDATE FORNECEDOR SET nome = ? where id = ? ");           
             stmt.setString(1, fornecedor.getNome());
-
             stmt.setInt(2, fornecedor.getId());
-            
-            
+                        
             stmt.executeUpdate();
             
             System.out.println("Fornecedor " + fornecedor.getNome() + " alterado com sucesso");
 
-
         } 
         catch (SQLException ex) {
-            ex.printStackTrace();
-
-             throw new RuntimeException("Erro ao inserir informação no banco de dados");
+            
+            throw new RuntimeException("Erro ao alterar informação no banco de dados");
+       
         } 
         finally {
+            
             Conexao.fecharConexao(con, stmt);
 
         }
-
     }
 
-    public void excluir(Fornecedor fornecedor) {
+    @Override
+    public void excluir(Fornecedor fornecedor) throws SQLException{
         
         Connection con = Conexao.getConexao();
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("DELETE from FORNECEDOR WHERE id = ?");
-           
+            
+            stmt = con.prepareStatement("DELETE from FORNECEDOR WHERE id = ?");           
             stmt.setInt(1, fornecedor.getId());
-            
-            
+                        
             stmt.executeUpdate();
             
-            System.out.println("Curso " + fornecedor.getNome() + " excluído com sucesso");
-
+            System.out.println("Fornecedor " + fornecedor.getNome() + " excluído com sucesso");
 
         } 
         catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Erro ao inserir informação no banco de dados");
+
+            throw new RuntimeException("Erro ao excluir informação do banco de dados");
             
         } 
         finally {
+
             Conexao.fecharConexao(con, stmt);
 
         }
-
     }
-    public List<Fornecedor> consulta(){
-       Connection con = Conexao.getConexao();
-       PreparedStatement stmt = null;
-       
-       ResultSet rs = null;
-       
-       
-       List<Fornecedor> fornecedores = new ArrayList<Fornecedor>();
-       
-       
+   
+    @Override
+    public List<Fornecedor> exibirDadosFornecedor(){
+    
+    Connection con = Conexao.getConexao();
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+              
+    List<Fornecedor> fornecedores = new ArrayList<Fornecedor>();
+              
        try{
            
-           stmt = con.prepareStatement("select id, nome from FORNECEDOR");
+           stmt = con.prepareStatement("select id, nome, CNPJ, tel, email from FORNECEDOR");
            rs = stmt.executeQuery();
            
            while (rs.next()){
@@ -123,7 +127,9 @@ public class FornecedorDAO {
               
                fornecedor.setId(rs.getInt("id"));
                fornecedor.setNome(rs.getString("nome"));
-              
+               fornecedor.setCNPJ(rs.getString("CNPJ"));
+               fornecedor.setTelefone(rs.getString("tel"));
+               fornecedor.setEmail(rs.getString("email"));             
                
                fornecedores.add(fornecedor);
                
@@ -131,17 +137,18 @@ public class FornecedorDAO {
            
            
        }catch (SQLException s){
+           
            s.printStackTrace();
            
        }
        
         finally {
-            Conexao.fecharConexao(con, stmt);
-
+            
+           Conexao.fecharConexao(con, stmt, rs);
+            
         }
        
-      return fornecedores;
-
-       
-   }
+      return fornecedores; 
+      
+    } 
 }
